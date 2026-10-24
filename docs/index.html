@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MM POS Desk — POS &amp; Inventory Management</title>
+<meta name="description" content="A self-hosted POS and inventory web app for shops. Static project preview — the Django app itself runs locally, not on GitHub Pages.">
+<style>
+  :root{--navy:#0f2440;--blue:#2563eb;--light:#eef4ff;--ink:#16202e;--muted:#5b6b80;--line:#dbe4ef;--green:#15803d}
+  *{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);line-height:1.6}
+  header{background:var(--navy);color:#fff;padding:48px 20px 36px} main{max-width:980px;margin:0 auto;padding:0 20px 48px}
+  .wrap{max-width:980px;margin:0 auto} h1{margin:0 0 8px;font-size:2.1rem;line-height:1.2} .sub{color:#cbd8ea;max-width:700px}
+  .btn{display:inline-block;background:var(--blue);color:#fff;text-decoration:none;padding:11px 18px;border-radius:8px;font-weight:600;margin:14px 10px 0 0}
+  .btn.ghost{background:transparent;border:1px solid #8aa0bd;color:#fff}
+  .note{background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:14px 16px;margin:24px 0}
+  h2{margin-top:36px} .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+  .card{border:1px solid var(--line);border-radius:12px;padding:18px;background:#fff} .card h3{margin:0 0 6px}
+  .mock{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:24px 0}
+  .mock-head{background:var(--navy);color:#fff;padding:12px 16px;font-weight:600}
+  .mock-body{display:grid;grid-template-columns:2fr 1fr;gap:0} .mock-body>div{padding:16px}
+  .row{display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding:8px 0}
+  .total{font-weight:700;font-size:1.15rem} code{background:var(--light);padding:2px 6px;border-radius:5px}
+  pre{background:#0f172a;color:#e2e8f0;padding:16px;border-radius:10px;overflow:auto} pre code{background:none;padding:0}
+  footer{border-top:1px solid var(--line);padding:20px;color:var(--muted)} a{color:var(--blue)}
+  @media(max-width:640px){.mock-body{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>MM POS Desk</h1>
+  <p class="sub">POS &amp; inventory management for shops — daily sales, stock, purchases, customers and suppliers in one self-hosted web app. Built by Min SiThu with Python, Django and SQLite. MIT licensed.</p>
+  <a class="btn" href="https://github.com/itsmeminsithu/MM-POS-Desk-Inventory-Management">View source on GitHub</a>
+  <a class="btn ghost" href="https://minsithu.org/mm-pos-desk-%e1%80%86%e1%80%ad%e1%80%af%e1%80%90%e1%80%ac-%e1%80%98%e1%80%ac%e1%80%9c%e1%80%b2-%e1%80%80%e1%80%ad%e1%80%af%e1%80%9a%e1%80%ba%e1%80%90%e1%80%ad%e1%80%af%e1%80%84%e1%80%ba-%e1%80%86/">Read the project overview</a>
+</div></header>
+<main>
+  <div class="note"><strong>What this page is:</strong> a static preview of the project. GitHub Pages cannot run the Django backend or its database, so this page does not log you in or record sales. To run the real app, clone the repo and follow the quick start below.</div>
+
+  <h2>What it does</h2>
+  <div class="grid">
+    <div class="card"><h3>Point of sale</h3><p>Product search, barcode-scanner input, fixed discounts, percentage tax, cash tender and change. Prices are calculated on the server, and stock is checked before checkout.</p></div>
+    <div class="card"><h3>Inventory</h3><p>SKU, barcode, category, selling price, reference cost and reorder levels. Multiple warehouses, purchases, adjustments, transfers and full movement history.</p></div>
+    <div class="card"><h3>Receipts &amp; returns</h3><p>Printable receipts, sales history, and full-sale returns that restore stock. Reports include date sales, payment-method totals, estimated gross margin and CSV export.</p></div>
+    <div class="card"><h3>Workspaces &amp; team</h3><p>Separate business workspaces, owner and cashier roles, and customer / supplier records. Currencies: MMK, THB or USD per workspace.</p></div>
+  </div>
+
+  <h2>Preview of the POS screen</h2>
+  <p>This is a static mock-up of the layout, not a live terminal.</p>
+  <div class="mock"><div class="mock-head">MM POS Desk &middot; Point of sale &middot; Main warehouse</div>
+    <div class="mock-body"><div>
+      <div class="row"><span>Sample product A</span><span>1 &times; 5,000</span></div>
+      <div class="row"><span>Sample product B</span><span>2 &times; 3,500</span></div>
+      <div class="row"><span>Discount</span><span>&minus;1,000</span></div>
+      <div class="row total"><span>Total</span><span>11,000</span></div>
+    </div><div style="background:var(--light)">
+      <p><strong>Payment</strong><br>Cash &middot; KPay &middot; WavePay<br>Bank transfer &middot; MMQR &middot; Card terminal (record only)</p>
+      <p style="color:var(--green)"><strong>&#10003; Stock checked</strong><br>Negative stock is rejected.</p>
+    </div></div>
+  </div>
+
+  <h2>Run it locally</h2>
+  <p>Requires Python 3.11 or newer.</p>
+  <pre><code>git clone https://github.com/itsmeminsithu/MM-POS-Desk-Inventory-Management.git
+cd MM-POS-Desk-Inventory-Management
+python3 start.py</code></pre>
+  <p>Then open <code>http://127.0.0.1:8001/</code>, choose <strong>Create business</strong>, and register in the browser. There is no default password. Full instructions are in the repo <a href="https://github.com/itsmeminsithu/MM-POS-Desk-Inventory-Management/blob/main/README.md">README</a>, and deployment notes in <a href="https://github.com/itsmeminsithu/MM-POS-Desk-Inventory-Management/blob/main/DEPLOYMENT.md">DEPLOYMENT.md</a>.</p>
+
+  <h2>Project structure</h2>
+  <pre><code>config/    Django settings, URLs, WSGI
+retail/    models, views, forms, services, tests, migrations
+templates/ HTML templates (retail/, registration/)
+static/    app.css, app.js, pos.js
+docs/      this static preview page</code></pre>
+  <p>Payments in the app are records of payments collected outside the app — it does not process cards, verify bank settlements, or create MMQR payloads. Read <a href="https://github.com/itsmeminsithu/MM-POS-Desk-Inventory-Management/blob/main/SECURITY.md">SECURITY.md</a> before public hosting.</p>
+</main>
+<footer><div class="wrap">Copyright &copy; 2026 Min SiThu (itsmeminsithu). MIT License. &middot; <a href="https://minsithu.org/">minsithu.org</a></div></footer>
+</body>
+</html>
