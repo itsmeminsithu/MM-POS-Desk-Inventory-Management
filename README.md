@@ -5,7 +5,7 @@ A business desk for everyday sales, inventory, purchases and customer records. R
 **Developer: Min SiThu (itsmeminsithu)**  
 [minsithu.org](https://minsithu.org/) · [Contact](https://minsithu.org/contact/) · [MIT License](LICENSE)
 
-**Live preview (static showcase):** https://itsmeminsithu.github.io/MM-POS-Desk-Inventory-Management/ — this page previews the project only. GitHub Pages cannot run the Django backend, so run the app locally with the steps below.
+**Live preview — real app, in GitHub only:** [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/itsmeminsithu/MM-POS-Desk-Inventory-Management) — this launches the real Django app in GitHub Codespaces. No external host, no static mock. See the Codespaces steps below.
 
 ## Features
 
@@ -25,6 +25,24 @@ A business desk for everyday sales, inventory, purchases and customer records. R
 - Platform administration for a separately created superuser.
 
 This release focuses on daily retail operations. Subscription billing, an online storefront, HR/payroll, accounting ledgers, direct payment APIs and automated fiscal reporting are not included. See [ROADMAP.md](ROADMAP.md).
+
+
+## Live preview in GitHub Codespaces
+
+GitHub Pages cannot run this Django backend, so there is no always-on public app link from GitHub alone. Codespaces is the GitHub-only way to run the real app live:
+
+1. Click **Open in GitHub Codespaces** above (or open https://codespaces.new/itsmeminsithu/MM-POS-Desk-Inventory-Management), choose a 2-core machine, and wait for setup. Setup installs the dependencies, runs migrations and checks the project.
+2. In the Codespace terminal, run:
+
+```bash
+python3 start.py --no-browser
+```
+
+3. When port **8001** forwards, open it from the preview prompt or the Ports tab. That forwarded page is the real app, not a mock.
+4. Select **Create business**, then **Settings & team → Load sample inventory** to try the POS with example products.
+5. Stop the Codespace when you are done, to save your free quota. Data in a Codespace lives in that Codespace only — it is a demo, not a shared production shop.
+
+The Pages site at https://itsmeminsithu.github.io/MM-POS-Desk-Inventory-Management/ is only a launch page for this Codespaces preview. It does not log you in or record sales.
 
 ## Start on Mac
 
