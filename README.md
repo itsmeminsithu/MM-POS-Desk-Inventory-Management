@@ -5,6 +5,8 @@ A business desk for everyday sales, inventory, purchases and customer records. R
 **Developer: Min SiThu (itsmeminsithu)**  
 [minsithu.org](https://minsithu.org/) · [Contact](https://minsithu.org/contact/) · [MIT License](LICENSE)
 
+**Live preview (static showcase):** https://itsmeminsithu.github.io/MM-POS-Desk-Inventory-Management/ — this page previews the project only. GitHub Pages cannot run the Django backend, so run the app locally with the steps below.
+
 ## Features
 
 - Business workspaces with separate catalogs, stock, contacts and sales.
