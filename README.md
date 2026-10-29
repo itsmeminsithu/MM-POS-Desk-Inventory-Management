@@ -1,13 +1,63 @@
 # MM POS Desk Inventory Management
 
-A business desk for everyday sales, inventory, purchases and customer records. Run it on your computer, create a business account and start with your own catalog.
+Point of sale and inventory for a small shop. It runs on your own computer. Create a business account in the browser, add products, and start recording sales.
 
-**Developer: Min SiThu (itsmeminsithu)**  
+**Developer: Min SiThu (itsmeminsithu)**
 [minsithu.org](https://minsithu.org/) · [Contact](https://minsithu.org/contact/) · [MIT License](LICENSE)
 
-**Live preview — real app, in GitHub only:** [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/itsmeminsithu/MM-POS-Desk-Inventory-Management) — this launches the real Django app in GitHub Codespaces. No external host, no static mock. See the Codespaces steps below.
+**Run the real app in GitHub:** [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/itsmeminsithu/MM-POS-Desk-Inventory-Management) — this starts the actual Django app in Codespaces. No other host, no static copy. Steps under "Codespaces" below.
 
-## Features
+## Run it locally first
+
+You need Python **3.11 or newer**. If you don't have it, install it from [python.org](https://www.python.org/downloads/) and reopen Terminal.
+
+Extract the ZIP, then in Terminal:
+
+```bash
+cd ~/Downloads/mm-pos-desk
+python3 start.py
+```
+
+The launcher installs dependencies, prepares the database and opens **http://127.0.0.1:8001/**. The first install needs internet. Later launches reuse the environment.
+
+1. In the browser, select **Create business**.
+2. Enter your business name, username, email and password.
+3. Choose **Settings & team → Load sample inventory** to try six example products, or add your own.
+4. Use **Inventory → Move stock** to enter opening stock or receive a purchase.
+5. Open **Point of sale** to record your first sale.
+
+There is no Terminal account-creation prompt and **no default password**. You create the account in the browser. Keep Terminal open while you use the app; press **Control+C** to stop.
+
+You can also run `bash Start-MM-POS.command` from the extracted folder. If macOS blocks double-click launching, use Terminal instead. Do not disable system security.
+
+Windows: install Python 3.11+ and run `Start-MM-POS.bat` or `py -3 start.py`. Linux: `python3 start.py`.
+
+Port 8001 lets this app run next to another app on port 8000. If 8001 is taken:
+
+```bash
+POS_PORT=8002 python3 start.py
+```
+
+Then open `http://127.0.0.1:8002/`.
+
+## Codespaces
+
+GitHub Pages cannot run a Django backend, so there is no always-on public link for this app from GitHub alone. Codespaces runs the real app:
+
+1. Click **Open in GitHub Codespaces** above (or open https://codespaces.new/itsmeminsithu/MM-POS-Desk-Inventory-Management), choose a 2-core machine, and wait for setup. Setup installs the dependencies, runs migrations and checks the project.
+2. In the Codespace terminal, run:
+
+```bash
+python3 start.py --no-browser
+```
+
+3. When port **8001** forwards, open it from the preview prompt or the Ports tab.
+4. Select **Create business**, then **Settings & team → Load sample inventory** to try the POS with example products.
+5. Stop the Codespace when you finish, to save your free quota. Data in a Codespace lives in that Codespace only. It is a demo, not a shared production shop.
+
+The Pages site at https://itsmeminsithu.github.io/MM-POS-Desk-Inventory-Management/ is only a launch page for the Codespaces preview. It does not log you in or record sales.
+
+## What it does
 
 - Business workspaces with separate catalogs, stock, contacts and sales.
 - Owner/cashier permissions, cashier account creation and access removal.
@@ -24,100 +74,49 @@ A business desk for everyday sales, inventory, purchases and customer records. R
 - Date-filtered summaries, payment-method totals, estimated gross margin and CSV export.
 - Platform administration for a separately created superuser.
 
-This release focuses on daily retail operations. Subscription billing, an online storefront, HR/payroll, accounting ledgers, direct payment APIs and automated fiscal reporting are not included. See [ROADMAP.md](ROADMAP.md).
+Not included: subscription billing, an online storefront, HR/payroll, accounting ledgers, direct payment APIs and automated fiscal reporting. This release is about daily retail work. See [ROADMAP.md](ROADMAP.md).
 
+## Products and stock
 
-## Live preview in GitHub Codespaces
+Add a product with a SKU that is unique within its business. Quantities are **whole units**. Set selling price, reference cost and reorder threshold. Editing a product does not change stock — use the movement form, so each change has a reason and a person attached to it.
 
-GitHub Pages cannot run this Django backend, so there is no always-on public app link from GitHub alone. Codespaces is the GitHub-only way to run the real app live:
+**Receive purchase** adds stock right away. Enter product, warehouse, quantity, purchase unit cost, and optional supplier and reference. Each purchase record is one received product line. Purchase-order drafts and supplier debt tracking are not included.
 
-1. Click **Open in GitHub Codespaces** above (or open https://codespaces.new/itsmeminsithu/MM-POS-Desk-Inventory-Management), choose a 2-core machine, and wait for setup. Setup installs the dependencies, runs migrations and checks the project.
-2. In the Codespace terminal, run:
+Use **Stock increase/decrease** for corrections, or **Transfer stock** to a different warehouse. Negative stock is rejected. Fix mistakes with a compensating adjustment; do not delete movement history.
 
-```bash
-python3 start.py --no-browser
-```
+Sample inventory only loads into an empty business. Sample prices are nominal amounts in the business currency, not converted prices. Check them before real use.
 
-3. When port **8001** forwards, open it from the preview prompt or the Ports tab. That forwarded page is the real app, not a mock.
-4. Select **Create business**, then **Settings & team → Load sample inventory** to try the POS with example products.
-5. Stop the Codespace when you are done, to save your free quota. Data in a Codespace lives in that Codespace only — it is a demo, not a shared production shop.
+## Selling and receipts
 
-The Pages site at https://itsmeminsithu.github.io/MM-POS-Desk-Inventory-Management/ is only a launch page for this Codespaces preview. It does not log you in or record sales.
+Pick a warehouse and customer, then add products. A USB/Bluetooth scanner that types a barcode and presses Enter works in the search field. Camera scanning and barcode-label printing are not included.
 
-## Start on Mac
+Discount is a fixed amount, applied before tax. Tax is a percentage of the discounted subtotal, rounded to two decimal places. These are inputs for the calculation, not tax rules for any country.
 
-Requires Python **3.11 or newer**. Install it from [python.org](https://www.python.org/downloads/) if needed, then reopen Terminal.
+For cash, enter the amount received. For other methods, check the payment outside the app and enter its reference. **Complete sale** records the sale, reduces stock and opens the receipt. Print or save a PDF from your browser.
 
-Extract the ZIP. In Terminal:
+If checkout loses its connection, retry the same sale. Do not take the money again. The POS keeps its pending request in the current browser session and the server recognises its ID. If you are not sure what happened, check Sales & receipts. If a price has changed, reload the POS before you continue.
 
-```bash
-cd ~/Downloads/mm-pos-desk
-python3 start.py
-```
-
-The launcher installs dependencies, prepares the database and opens **http://127.0.0.1:8001/**. Initial installation needs internet access. Later launches reuse the environment.
-
-1. In the browser, select **Create business**.
-2. Enter your business name, username, email and password.
-3. Choose **Settings & team → Load sample inventory** to try six example products, or add your own products.
-4. Use **Inventory → Move stock** to enter opening stock or receive a purchase.
-5. Open **Point of sale** to record your first sale.
-
-**There is no Terminal account-creation prompt and no default password.** Create your account in the browser. Keep Terminal open while using the app; press **Control+C** to stop.
-
-Alternatively, run `bash Start-MM-POS.command` from the extracted folder. If macOS blocks double-click launching, use Terminal. Do not disable system security.
-
-Windows: install Python 3.11+ and run `Start-MM-POS.bat` or `py -3 start.py`. Linux: `python3 start.py`.
-
-Port 8001 lets this app run alongside another app on port 8000. If occupied:
-
-```bash
-POS_PORT=8002 python3 start.py
-```
-
-Then open `http://127.0.0.1:8002/`.
-
-## Products and inventory
-
-Add a product with a unique SKU within its business. Quantities are **whole units**. Set selling price, reference cost and reorder threshold. Product edits do not directly change inventory; use the movement form so each change has a reason and actor.
-
-**Receive purchase** immediately adds stock. Enter product, warehouse, quantity, purchase unit cost, optional supplier and reference. Each purchase record is one received product line; purchase-order drafts and supplier debt tracking are not included.
-
-Use **Stock increase/decrease** for corrections or **Transfer stock** with a different destination warehouse. Negative stock is rejected. Record compensating adjustments for mistakes rather than deleting movement history.
-
-Sample inventory is available only for an empty business. Sample prices are nominal amounts in its currency, not converted prices. Review them before real use.
-
-## Point of sale and receipts
-
-Choose a warehouse and customer, then add products. A USB/Bluetooth scanner that types a barcode and presses Enter can use the search field. Camera scanning and barcode-label printing are not included.
-
-Discount is a fixed amount applied before tax. Tax is a percentage of the discounted subtotal, rounded to two decimal places. These are calculation inputs, not jurisdiction-specific tax rules.
-
-For cash, enter the received amount. For other methods, verify the payment externally and enter its reference. **Complete sale** records the sale, reduces stock and opens the receipt. Print or save PDF using your browser.
-
-If checkout loses its connection, retry the same sale. Do not collect money again. The POS retains its pending request in the current browser session; the server recognizes its ID. Check Sales & receipts if uncertain. A changed price requires reloading the POS before proceeding.
-
-Owners can record a **full return** from a receipt. All units are restored to the original warehouse and the sale is excluded from net sales reports. Complete any money refund separately. Partial returns, exchanges and refund accounting are not included.
+Owners can record a **full return** from a receipt. All units go back to the original warehouse and the sale is left out of net sales reports. Handle the money refund separately. Partial returns, exchanges and refund accounting are not included.
 
 ## Team and workspaces
 
-Owners manage products, stock, suppliers, settings, cashier accounts, reports and returns. Cashiers use POS and view products, inventory, customers and receipts. They cannot edit stock, products or owner settings/reports.
+Owners manage products, stock, suppliers, settings, cashier accounts, reports and returns. Cashiers use the POS and can view products, inventory, customers and receipts. They cannot edit stock, products, or owner settings and reports.
 
-Create cashiers under **Settings & team** and share initial credentials privately. Removing membership removes business access on the next request. It does not delete the user's other memberships or account.
+Create cashiers under **Settings & team** and share the first login details privately. Removing a member removes their access to that business on the next request. It does not delete their account or their other memberships.
 
-An account can own multiple businesses and switch between them. Isolation uses business-filtered records in a shared database, not separate databases or schemas. A platform superuser can view records and disable businesses at `/admin/`. Business owners are not platform superusers.
+One account can own several businesses and switch between them. Businesses are separated by filtered records in one shared database, not by separate databases or schemas. A platform superuser can view records and disable businesses at `/admin/`. Business owners are not platform superusers.
 
 ## Payments and currencies
 
-Methods are **records of payments collected outside the app**. The app does not process cards, verify bank settlements, create MMQR payloads, connect merchant accounts or manage chargebacks.
+The payment methods are **records of money collected outside the app**. The app does not process cards, check bank settlements, create MMQR payloads, connect merchant accounts or handle chargebacks.
 
-Each workspace has one fixed currency: MMK, THB or USD. Initial registration creates an MMK workspace. **Create business** lets you select another currency. There is no currency conversion or mixed-currency checkout.
+Each workspace has one fixed currency: MMK, THB or USD. Registration starts with an MMK workspace. **Create business** lets you pick another currency. There is no currency conversion and no mixed-currency checkout.
 
 ## Reports
 
-Reports exclude full returns and use the original sale date. Estimated gross margin equals sales less tax and the reference cost saved at checkout. It does not use FIFO/weighted-average costing or expenses. Purchase receipts do not automatically change reference product costs.
+Reports leave out full returns and use the original sale date. Estimated gross margin is sales minus tax and the reference cost saved at checkout. It does not use FIFO or weighted-average costing, and it does not count expenses. Purchase receipts do not change a product's reference cost on their own.
 
-CSV exports escape spreadsheet formula prefixes in text fields. Receipts are sales records, not certified fiscal invoices. Printing uses the browser; direct ESC/POS and cash-drawer hardware are not included.
+CSV exports escape spreadsheet formula prefixes in text fields. Receipts are sales records, not certified fiscal invoices. Printing goes through the browser. ESC/POS printers and cash drawers are not supported.
 
 ## Developer setup
 
@@ -137,24 +136,24 @@ python manage.py makemigrations --check --dry-run
 python manage.py test
 ```
 
-Optional platform administrator: `python manage.py createsuperuser`, then sign in at `/admin/`.
+Optional platform admin: `python manage.py createsuperuser`, then sign in at `/admin/`.
 
-Source layout:
+Where things live:
 
-- `retail/models.py`: business, inventory, contacts and transaction records.
-- `retail/services.py`: atomic checkout, stock movements and returns.
-- `retail/views.py`: authorization and application routes.
-- `retail/tests.py`: workflow and permission tests.
-- `static/pos.js`: basket, product selection and checkout retries.
-- `templates/` and `static/app.css`: interface and print layout.
+- `retail/models.py` — business, inventory, contacts and transaction records.
+- `retail/services.py` — checkout, stock movements and returns.
+- `retail/views.py` — permissions and routes.
+- `retail/tests.py` — workflow and permission tests.
+- `static/pos.js` — basket, product selection and checkout retries.
+- `templates/` and `static/app.css` — interface and print layout.
 
 ## Data and backups
 
-Database and development secret are stored in `.local-data/`, excluded from Git. Stop the app before copying that directory for a backup. Store backups securely; never publish databases, secrets or `.venv/`.
+The database and development secret sit in `.local-data/`, which is excluded from Git. Stop the app before copying that folder for a backup. Keep backups somewhere safe. Never publish databases, secrets or `.venv`.
 
-Configuration uses environment variables. `.env.example` is documentation, not automatically loaded. Core screens use local assets and system fonts.
+Settings come from environment variables. `.env.example` documents them; it is not loaded automatically. Core screens use local assets and system fonts.
 
-Read [DEPLOYMENT.md](DEPLOYMENT.md) and [SECURITY.md](SECURITY.md) before public hosting. The launcher uses a development server. GitHub Pages cannot run this backend. See [GITHUB_SETUP.md](GITHUB_SETUP.md) to upload the source.
+Read [DEPLOYMENT.md](DEPLOYMENT.md) and [SECURITY.md](SECURITY.md) before hosting this in public. The launcher runs a development server. GitHub Pages cannot run this backend. See [GITHUB_SETUP.md](GITHUB_SETUP.md) to upload the source.
 
 ## Troubleshooting
 
